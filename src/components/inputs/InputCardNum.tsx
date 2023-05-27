@@ -1,9 +1,30 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
-const InputCardNum = () => {
-  const inputRef = useRef(null);
+type InputCardNumProps = {
+  totalCardNumber: string;
+  setTotalCardNumber: React.Dispatch<React.SetStateAction<string>>;
+};
 
-  console.log("the input ref: ", inputRef.current);
+const InputCardNum = ({
+  totalCardNumber,
+  setTotalCardNumber,
+}: InputCardNumProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const secondRef = useRef<HTMLInputElement>(null);
+  const thirdRef = useRef<HTMLInputElement>(null);
+  const fourthRef = useRef<HTMLInputElement>(null);
+
+  const [firstInput, setFirstInput] = useState("");
+  const [secondInput, setSecondInput] = useState("");
+  const [thirdInput, setThirdInput] = useState("");
+  const [fourthInput, setFourthInput] = useState("");
+
+  useEffect(() => {
+    setTotalCardNumber(
+      `${firstInput}${secondInput}${thirdInput}${fourthInput}`
+    );
+  }, [firstInput, secondInput, thirdInput, fourthInput]);
+
   const handleKeyUp = (e: any) => {
     if (e.target.value.length === e.target.maxLength) {
       if (inputRef !== null && inputRef.current !== null) {
@@ -43,8 +64,63 @@ const InputCardNum = () => {
         </p>
       </label>
       <div
-        className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm gap-1 
-      focus-within:border-clrBluePry focus-within:outline-clrBluePry focus-within:bg-clrBluePry focus-within:bg-opacity-5 focus-within:outline-1
+        onClick={(e) => {
+          let current = document.querySelector(".cardNum");
+          if (current instanceof HTMLElement) {
+            // while (current && current.tagName !== "INPUT") {
+            console.log("just before the while loop: ", current);
+            console.log(
+              "just before the while loop, the tagName: ",
+              current?.tagName
+            );
+
+            // current = current.nextElementSibling;
+            while (current) {
+              if (current?.tagName === "INPUT") {
+                if (
+                  current?.getAttribute("value")?.length ===
+                  Number(current?.getAttribute("maxLength"))
+                ) {
+                  if (
+                    current.nextElementSibling !== undefined &&
+                    current.nextElementSibling !== null
+                  ) {
+                    current = current.nextElementSibling;
+                    continue;
+                  } else {
+                    current = document.querySelector(".cardNum");
+                    if (current instanceof HTMLElement) {
+                      current?.focus();
+                      break;
+                    }
+                  }
+                  // break;
+                } else {
+                  if (current instanceof HTMLElement) {
+                    current?.focus();
+                    break;
+                  }
+                }
+              } else {
+                current = current.nextElementSibling;
+                continue;
+                // break;
+              }
+
+              console.log("the reeeealll element ", current);
+            }
+          } else {
+            current = document.querySelector(".cardNum");
+            if (current instanceof HTMLElement) {
+              if (current?.tagName === "INPUT") {
+                current.focus();
+              }
+            }
+          }
+          e.stopPropagation();
+        }}
+        className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm gap-2 
+        focus-within:border-clrBluePry focus-within:outline-clrBluePry focus-within:bg-clrBluePry focus-within:bg-opacity-5 focus-within:outline-1
       `}
       >
         <input
@@ -54,34 +130,84 @@ const InputCardNum = () => {
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={inputRef}
-          className="cardNum max-w-[36px] bg-transparent outline-none border-none focus:outline-none"
+          value={firstInput}
+          onChange={(e) => setFirstInput(e.target.value)}
+          // onFocus={(e) => {
+          //   e.stopPropagation();
+          // }}
+          onClick={(e) => {
+            if (inputRef !== null && inputRef !== undefined) {
+              inputRef?.current?.focus();
+            }
+            e.stopPropagation();
+          }}
+          className="cardNum w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
         />
-        <p>-</p>
+        <div className="text-clrDark font-bold text-center flex items-center justify-center">
+          -
+        </div>
         <input
           type="text"
           placeholder="3456"
           maxLength={4}
           minLength={0}
           onKeyUp={handleKeyUp}
-          className="cardNum max-w-[36px] bg-transparent outline-none border-none focus:outline-none"
+          ref={secondRef}
+          value={secondInput}
+          onChange={(e) => setSecondInput(e.target.value)}
+          // onFocus={(e) => {
+          //   if (secondRef !== null && secondRef !== undefined) {
+          //     secondRef?.current?.focus();
+          //   }
+          //   e.stopPropagation();
+          // }}
+          onClick={(e) => {
+            if (secondRef !== null && secondRef !== undefined) {
+              secondRef?.current?.focus();
+            }
+            e.stopPropagation();
+          }}
+          className="w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
         />
-        <p>-</p>
+        <div className="text-clrDark font-bold text-center flex items-center justify-center">
+          -
+        </div>
         <input
           type="text"
           placeholder="5678"
           maxLength={4}
           minLength={0}
           onKeyUp={handleKeyUp}
-          className="cardNum max-w-[36px] bg-transparent outline-none border-none focus:outline-none"
+          ref={thirdRef}
+          value={thirdInput}
+          onChange={(e) => setThirdInput(e.target.value)}
+          onClick={(e) => {
+            if (thirdRef !== null && thirdRef !== undefined) {
+              thirdRef?.current?.focus();
+            }
+            e.stopPropagation();
+          }}
+          className="w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
         />
-        <p>-</p>
+        <div className="text-clrDark font-bold text-center flex items-center justify-center">
+          -
+        </div>
         <input
           type="text"
           placeholder="7890"
           maxLength={4}
           minLength={0}
           onKeyUp={handleKeyUp}
-          className="cardNum max-w-[36px] bg-transparent outline-none border-none focus:outline-none"
+          ref={fourthRef}
+          value={fourthInput}
+          onChange={(e) => setFourthInput(e.target.value)}
+          onClick={(e) => {
+            if (fourthRef !== null && fourthRef !== undefined) {
+              fourthRef?.current?.focus();
+            }
+            e.stopPropagation();
+          }}
+          className="w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
         />
       </div>
     </div>

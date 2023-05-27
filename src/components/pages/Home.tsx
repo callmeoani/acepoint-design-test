@@ -10,8 +10,9 @@ import { slide as Menu, State } from "react-burger-menu";
 import useStorageHook from "../../hooks/useStorageHook";
 import { SummaryType } from "../../@types/type";
 import SavedCard from "../others/SavedCard";
-import InputCardNumber from "../inputs/InputCardNumber";
 import InputCardNum from "../inputs/InputCardNum";
+import InputExpiryDate from "../inputs/InputExpiryDate";
+import MainForm from "../others/MainForm";
 
 const Home = () => {
   const [cardNumber, setCardNumber] = useState<string>("");
@@ -86,74 +87,7 @@ const Home = () => {
         </div>
 
         <div>
-          <form className="">
-            {/* <div>
-              <InputCardNumber
-                label="Card Number"
-                hint="Enter the 16-digit card number on the card"
-                isLabelSide={false}
-                inputFor="card-number"
-                placeholder="2412"
-                // placeholder="2412 - 7512 - 3412 - 3456"
-                value={cardNumber}
-                valueChange={handleCardNumChange}
-                isPassword={false}
-                centralize={true}
-                errorMsg={""}
-                inputType="card-number"
-                // ref={inputRef}
-              />
-            </div> */}
-            <div>
-              <InputCardNum />
-            </div>
-            <div>
-              <InputBasic
-                label="Cvv Number"
-                hint="Enter the 3 or 4 digit number on the card"
-                isLabelSide={true}
-                inputFor="cvv-number"
-                placeholder="123"
-                value={cvv}
-                valueChange={(e) => setCvv(e.target.value)}
-                isPassword={false}
-                centralize={true}
-                errorMsg={""}
-              />
-            </div>
-            <div>
-              <InputBasic
-                label="Expiry Date"
-                hint="Enter the expiration date of the card"
-                isLabelSide={true}
-                inputFor="expiry-date"
-                placeholder="11/21"
-                value={expiryDate}
-                valueChange={(e) => setExpiryDate(e.target.value)}
-                isPassword={false}
-                centralize={true}
-                errorMsg={""}
-              />
-            </div>
-            <div>
-              <InputBasic
-                label="Password"
-                hint="Enter your Dynamic password"
-                isLabelSide={true}
-                inputFor="password"
-                placeholder="password"
-                value={password}
-                valueChange={(e) => setPassword(e.target.value)}
-                isPassword={true}
-                centralize={true}
-                errorMsg={""}
-              />
-            </div>
-            <ButtonBasic
-              displayName="Pay Now"
-              stylings={"h-[50px] md:h-[60px] text-clrLight bg-clrBluePry"}
-            />
-          </form>
+          <MainForm />
         </div>
       </div>
       <div className="absolute md:relative w-full top-20 md:top-0  md:max-w-[30%] md:flex md:flex-col ">
@@ -163,6 +97,9 @@ const Home = () => {
             stylings={
               "mb-5 md:mb-10 mx-auto h-[30px] md:h-[40px] max-w-[80px] bg-clrBluePry text-clrLight"
             }
+            buttonClick={() => {
+              console.log("cards button clicked=======");
+            }}
           />
           {showSaveCards && (
             <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
