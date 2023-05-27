@@ -1,4 +1,4 @@
-import { ProviderProps, useRef, useState } from "react";
+import { ProviderProps, useRef, useState, useContext } from "react";
 import ButtonBasic from "../buttons/ButtonBasic";
 import InputBasic from "../inputs/InputBasic";
 import CountDown from "../timings/CountDown";
@@ -8,18 +8,20 @@ import { AiFillApple } from "react-icons/ai";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { slide as Menu, State } from "react-burger-menu";
 import useStorageHook from "../../hooks/useStorageHook";
-import { SummaryType } from "../../@types/type";
+import { StorageContextType, SummaryType } from "../../@types/type";
 import SavedCard from "../others/SavedCard";
-import InputCardNum from "../inputs/InputCardNum";
-import InputExpiryDate from "../inputs/InputExpiryDate";
 import MainForm from "../others/MainForm";
+import CardsListing from "../others/CardsListing";
+import StorageContext from "../../context/StorageProvider";
 
 const Home = () => {
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [cvv, setCvv] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [password, setPassword] = useState("");
   const [showSaveCards, setShowSavedCards] = useState(false);
+  const [showCardDetails, setShowCardsDetails] = useState(false);
+
+  // const { savedCards, setSavedCards } = useStorageHook();
+  const { savedCards, setSavedCards } = useContext(
+    StorageContext
+  ) as StorageContextType;
 
   const productSummaryData = [
     {
@@ -53,19 +55,9 @@ const Home = () => {
     );
   };
 
+  console.log("all cards: ", savedCards);
+
   // for card input
-
-  const inputRef = useRef(null);
-
-  const handleCardNumChange = (e: any) => {
-    setCardNumber(e.target.value);
-    if (e.target.value.length === e.target.maxLength) {
-      if (inputRef.current !== null && inputRef?.current !== undefined) {
-        // inputRef?.current?.nextSibling?.focus();
-        console.log("the inputRef.current value:", inputRef?.current);
-      }
-    }
-  };
 
   return (
     <main className="relative flex flex-col md:flex-row md:gap-[5%] ">
@@ -99,9 +91,16 @@ const Home = () => {
             }
             buttonClick={() => {
               console.log("cards button clicked=======");
+              setShowSavedCards(true);
             }}
           />
+
           {showSaveCards && (
+            <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
+              <CardsListing cardList={[]} />
+            </div>
+          )}
+          {showCardDetails && (
             <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
               <SavedCard />
             </div>
