@@ -1,0 +1,205 @@
+import { ProviderProps, useRef, useState } from "react";
+import ButtonBasic from "../buttons/ButtonBasic";
+import InputBasic from "../inputs/InputBasic";
+import CountDown from "../timings/CountDown";
+import { ImMenu } from "react-icons/im";
+import { BiReceipt } from "react-icons/bi";
+import { AiFillApple } from "react-icons/ai";
+import { BsFillCreditCardFill } from "react-icons/bs";
+import { slide as Menu, State } from "react-burger-menu";
+import useStorageHook from "../../hooks/useStorageHook";
+import { SummaryType } from "../../@types/type";
+import SavedCard from "../others/SavedCard";
+import InputCardNumber from "../inputs/InputCardNumber";
+import InputCardNum from "../inputs/InputCardNum";
+
+const Home = () => {
+  const [cardNumber, setCardNumber] = useState<string>("");
+  const [cvv, setCvv] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [password, setPassword] = useState("");
+  const [showSaveCards, setShowSavedCards] = useState(false);
+
+  const productSummaryData = [
+    {
+      title: "Company",
+      value: "Apple",
+      icon: "apple",
+    },
+    {
+      title: "Product",
+      value: "MacBook Air",
+    },
+    {
+      title: "VAT(20%)",
+      value: "$100.00",
+    },
+  ];
+
+  const ProductSummary = ({ summary }: SummaryType) => {
+    return (
+      <div className="flex justify-between items-center text-sm">
+        <p className="text-clrGreyPry font-semibole ">{summary.title}</p>
+        <div className="text-clrDark text-left flex items-center gap-2 font-bold">
+          {summary.icon === "apple" ? (
+            <div className="rounded-full w-5 h-5 bg-clrDark flex items-center justify-center">
+              <AiFillApple size={15} color={"#fff"} />
+            </div>
+          ) : null}
+          <p>{summary.value}</p>
+        </div>
+      </div>
+    );
+  };
+
+  // for card input
+
+  const inputRef = useRef(null);
+
+  const handleCardNumChange = (e: any) => {
+    setCardNumber(e.target.value);
+    if (e.target.value.length === e.target.maxLength) {
+      if (inputRef.current !== null && inputRef?.current !== undefined) {
+        // inputRef?.current?.nextSibling?.focus();
+        console.log("the inputRef.current value:", inputRef?.current);
+      }
+    }
+  };
+
+  return (
+    <main className="relative flex flex-col md:flex-row md:gap-[5%] ">
+      <div className="md:flex-1">
+        <div className="relative flex justify-between items-center mb-80 md:mb-10">
+          <div className="flex items-center gap-2">
+            <div className="relative rounded-full bg-clrBluePry w-12 h-12 flex items-center justify-center">
+              <BsFillCreditCardFill
+                size={20}
+                color={"#fff"}
+                className="transform -rotate-12"
+              />
+            </div>
+            <p className="text-clrDark text-xl">
+              <span className="font-bold">AceCoin</span>Pay
+            </p>
+          </div>
+          <div className="relative"></div>
+        </div>
+
+        <div>
+          <form className="">
+            {/* <div>
+              <InputCardNumber
+                label="Card Number"
+                hint="Enter the 16-digit card number on the card"
+                isLabelSide={false}
+                inputFor="card-number"
+                placeholder="2412"
+                // placeholder="2412 - 7512 - 3412 - 3456"
+                value={cardNumber}
+                valueChange={handleCardNumChange}
+                isPassword={false}
+                centralize={true}
+                errorMsg={""}
+                inputType="card-number"
+                // ref={inputRef}
+              />
+            </div> */}
+            <div>
+              <InputCardNum />
+            </div>
+            <div>
+              <InputBasic
+                label="Cvv Number"
+                hint="Enter the 3 or 4 digit number on the card"
+                isLabelSide={true}
+                inputFor="cvv-number"
+                placeholder="123"
+                value={cvv}
+                valueChange={(e) => setCvv(e.target.value)}
+                isPassword={false}
+                centralize={true}
+                errorMsg={""}
+              />
+            </div>
+            <div>
+              <InputBasic
+                label="Expiry Date"
+                hint="Enter the expiration date of the card"
+                isLabelSide={true}
+                inputFor="expiry-date"
+                placeholder="11/21"
+                value={expiryDate}
+                valueChange={(e) => setExpiryDate(e.target.value)}
+                isPassword={false}
+                centralize={true}
+                errorMsg={""}
+              />
+            </div>
+            <div>
+              <InputBasic
+                label="Password"
+                hint="Enter your Dynamic password"
+                isLabelSide={true}
+                inputFor="password"
+                placeholder="password"
+                value={password}
+                valueChange={(e) => setPassword(e.target.value)}
+                isPassword={true}
+                centralize={true}
+                errorMsg={""}
+              />
+            </div>
+            <ButtonBasic
+              displayName="Pay Now"
+              stylings={"h-[50px] md:h-[60px] text-clrLight bg-clrBluePry"}
+            />
+          </form>
+        </div>
+      </div>
+      <div className="absolute md:relative w-full top-20 md:top-0  md:max-w-[30%] md:flex md:flex-col ">
+        <div className="relative md:static">
+          <ButtonBasic
+            displayName="Cards"
+            stylings={
+              "mb-5 md:mb-10 mx-auto h-[30px] md:h-[40px] max-w-[80px] bg-clrBluePry text-clrLight"
+            }
+          />
+          {showSaveCards && (
+            <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
+              <SavedCard />
+            </div>
+          )}
+        </div>
+        <div className="bg-[#F1F6F9] px-5 py-6 rounded-lg mb8 flex-1 md:flex md:flex-col  ">
+          <div className="hidden md:flex md:flex-1 ">Hello there</div>
+          <div>
+            <div className="flex flex-col gap-2 md:gap-3">
+              {productSummaryData.map((summary, index) => (
+                <ProductSummary key={index} summary={summary} />
+              ))}
+            </div>
+            <div className="relative">
+              <div className="absolute w-6 h-6 rounded-full bg-white top-[50%] -translate-y-[50%] -left-8"></div>
+              <hr className=" w-full bg-clrGreyPry border-dotted border-1 my-4  " />
+              <div className="absolute w-6 h-6 rounded-full bg-white top-[50%] -translate-y-[50%] -right-8"></div>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col text-sm">
+                <p className="text-clrGreyPry">You have to Pay</p>
+                <p className="text-clrDark text-2xl align-baseline font-bold ">
+                  549
+                  <span className="text-sm font-semibold">
+                    .99 <span className="text-clrGreyPry">USD</span>
+                  </span>
+                </p>
+              </div>
+              <BiReceipt size={30} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Home;
