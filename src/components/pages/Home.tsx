@@ -18,10 +18,10 @@ const Home = () => {
   const [showSaveCards, setShowSavedCards] = useState(false);
   const [showCardDetails, setShowCardsDetails] = useState(false);
 
-  // const { savedCards, setSavedCards } = useStorageHook();
-  const { savedCards, setSavedCards } = useContext(
-    StorageContext
-  ) as StorageContextType;
+  const { savedCards, setSavedCards } = useStorageHook();
+  // const { savedCards, setSavedCards } = useContext(
+  //   StorageContext
+  // ) as StorageContextType;
 
   const productSummaryData = [
     {
@@ -97,7 +97,7 @@ const Home = () => {
 
           {showSaveCards && (
             <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
-              <CardsListing cardList={[]} />
+              <CardsListing cardList={savedCards} />
             </div>
           )}
           {showCardDetails && (

@@ -5,6 +5,8 @@ type InputBasicProps = {
   inputFor: string;
   hint: string;
   isLabelSide: boolean;
+  minInput?: number;
+  maxInput?: number;
   // type: string;
   placeholder: string;
   isPassword: boolean;
@@ -21,6 +23,8 @@ const InputBasic = ({
   hint,
   isLabelSide,
   inputFor,
+  minInput,
+  maxInput,
   // type,
   isPassword,
   placeholder,
@@ -109,6 +113,8 @@ const InputBasic = ({
           type={isPassword ? "password" : "string"}
           id={inputFor}
           placeholder={placeholder}
+          minLength={minInput}
+          maxLength={maxInput}
           value={value}
           onChange={valueChange}
           className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 focus:text-clrBluePry active:text-clrBluePry text-clrDark text-sm ${

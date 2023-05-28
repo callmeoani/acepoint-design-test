@@ -1,14 +1,19 @@
 import { useRef, useState, useEffect } from "react";
+import { CardDetailsType } from "../../@types/type";
+import useStorageHook from "../../hooks/useStorageHook";
 
 type InputCardNumProps = {
   totalCardNumber: string;
-  setTotalCardNumber: React.Dispatch<React.SetStateAction<string>>;
+  // setTotalCardNumber: React.Dispatch<React.SetStateAction<string>>;
+  setTotalCardNumber: React.Dispatch<React.SetStateAction<CardDetailsType>>;
 };
 
-const InputCardNum = ({
-  totalCardNumber,
-  setTotalCardNumber,
-}: InputCardNumProps) => {
+{
+  // totalCardNumber,
+  // setTotalCardNumber,
+}
+const InputCardNum = () => {
+  const { cardNumberExpiry, setCardNumberExpiry } = useStorageHook();
   const inputRef = useRef<HTMLInputElement>(null);
   const secondRef = useRef<HTMLInputElement>(null);
   const thirdRef = useRef<HTMLInputElement>(null);
@@ -19,11 +24,13 @@ const InputCardNum = ({
   const [thirdInput, setThirdInput] = useState("");
   const [fourthInput, setFourthInput] = useState("");
 
-  useEffect(() => {
-    setTotalCardNumber(
-      `${firstInput}${secondInput}${thirdInput}${fourthInput}`
-    );
-  }, [firstInput, secondInput, thirdInput, fourthInput]);
+  // useEffect(() => {
+
+  //   setTotalCardNumber((prev) => ({
+  //     ...prev,
+  //     cardNumber: `${firstInput}${secondInput}${thirdInput}${fourthInput}`,
+  //   }));
+  // }, [firstInput, secondInput, thirdInput, fourthInput]);
 
   const handleKeyUp = (e: any) => {
     if (e.target.value.length === e.target.maxLength) {
@@ -130,11 +137,14 @@ const InputCardNum = ({
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={inputRef}
-          value={firstInput}
-          onChange={(e) => setFirstInput(e.target.value)}
-          // onFocus={(e) => {
-          //   e.stopPropagation();
-          // }}
+          value={cardNumberExpiry.numFirstPart}
+          onChange={(e) =>
+            setCardNumberExpiry((prev) => ({
+              ...prev,
+              numFirstPart: e.target.value,
+            }))
+          }
+          // onChange={(e) => setFirstInput(e.target.value)}
           onClick={(e) => {
             if (inputRef !== null && inputRef !== undefined) {
               inputRef?.current?.focus();
@@ -153,14 +163,15 @@ const InputCardNum = ({
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={secondRef}
-          value={secondInput}
-          onChange={(e) => setSecondInput(e.target.value)}
-          // onFocus={(e) => {
-          //   if (secondRef !== null && secondRef !== undefined) {
-          //     secondRef?.current?.focus();
-          //   }
-          //   e.stopPropagation();
-          // }}
+          // value={secondInput}
+          // onChange={(e) => setSecondInput(e.target.value)}
+          value={cardNumberExpiry.numSecondPart}
+          onChange={(e) =>
+            setCardNumberExpiry((prev) => ({
+              ...prev,
+              numSecondPart: e.target.value,
+            }))
+          }
           onClick={(e) => {
             if (secondRef !== null && secondRef !== undefined) {
               secondRef?.current?.focus();
@@ -179,8 +190,15 @@ const InputCardNum = ({
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={thirdRef}
-          value={thirdInput}
-          onChange={(e) => setThirdInput(e.target.value)}
+          // value={thirdInput}
+          // onChange={(e) => setThirdInput(e.target.value)}
+          value={cardNumberExpiry.numThirdPart}
+          onChange={(e) =>
+            setCardNumberExpiry((prev) => ({
+              ...prev,
+              numThirdPart: e.target.value,
+            }))
+          }
           onClick={(e) => {
             if (thirdRef !== null && thirdRef !== undefined) {
               thirdRef?.current?.focus();
@@ -199,8 +217,15 @@ const InputCardNum = ({
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={fourthRef}
-          value={fourthInput}
-          onChange={(e) => setFourthInput(e.target.value)}
+          // value={fourthInput}
+          // onChange={(e) => setFourthInput(e.target.value)}
+          value={cardNumberExpiry.numFourthPart}
+          onChange={(e) =>
+            setCardNumberExpiry((prev) => ({
+              ...prev,
+              numFourthPart: e.target.value,
+            }))
+          }
           onClick={(e) => {
             if (fourthRef !== null && fourthRef !== undefined) {
               fourthRef?.current?.focus();

@@ -3,12 +3,15 @@ import InputCardNum from "../inputs/InputCardNum";
 import InputBasic from "../inputs/InputBasic";
 import InputExpiryDate from "../inputs/InputExpiryDate";
 import ButtonBasic from "../buttons/ButtonBasic";
+import useStorageHook from "../../hooks/useStorageHook";
 
 const MainForm = () => {
   const [cardNumber, setCardNumber] = useState<string>("");
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [password, setPassword] = useState("");
+
+  const { cardDetails, setCardDetails } = useStorageHook();
 
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -22,8 +25,10 @@ const MainForm = () => {
     <form className="">
       <div>
         <InputCardNum
-          totalCardNumber={cardNumber}
-          setTotalCardNumber={setCardNumber}
+        // totalCardNumber={cardNumber}
+        // setTotalCardNumber={setCardNumber}
+        // totalCardNumber={cardDetails.cardNumber}
+        // setTotalCardNumber={setCardDetails}
         />
       </div>
       <div>
@@ -33,8 +38,17 @@ const MainForm = () => {
           isLabelSide={true}
           inputFor="cvv-number"
           placeholder="123"
-          value={cvv}
-          valueChange={(e) => setCvv(e.target.value)}
+          minInput={3}
+          maxInput={4}
+          // value={cvv}
+          // valueChange={(e) => setCvv(e.target.value)}
+          value={cardDetails.cvv}
+          valueChange={(e) => {
+            setCardDetails((prev) => ({
+              ...prev,
+              cvv: e.target.value,
+            }));
+          }}
           isPassword={false}
           centralize={true}
           errorMsg={""}
@@ -46,8 +60,10 @@ const MainForm = () => {
         hint="Enter the 3 or 4 digit number on the card"
         isLabelSide={true}
         errorMsg=""
-        totalValue={expiryDate}
-        setTotalValue={setExpiryDate}
+        // totalValue={expiryDate}
+        // setTotalValue={setExpiryDate}
+        totalValue={cardDetails.expiryDate}
+        setTotalValue={setCardDetails}
       />
       <div>
         <InputBasic
@@ -56,8 +72,15 @@ const MainForm = () => {
           isLabelSide={true}
           inputFor="password"
           placeholder="password"
-          value={password}
-          valueChange={(e) => setPassword(e.target.value)}
+          // value={password}
+          // valueChange={(e) => setPassword(e.target.value)}
+          value={cardDetails.password}
+          valueChange={(e) =>
+            setCardDetails((prev) => ({
+              ...prev,
+              password: e.target.value,
+            }))
+          }
           isPassword={true}
           centralize={true}
           errorMsg={""}

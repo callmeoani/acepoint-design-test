@@ -1,4 +1,6 @@
 import { useRef, useState, useEffect } from "react";
+import { CardDetailsType } from "../../@types/type";
+import useStorageHook from "../../hooks/useStorageHook";
 
 type InputExpiryDateProps = {
   label: string;
@@ -6,7 +8,7 @@ type InputExpiryDateProps = {
   hint: string;
   isLabelSide: boolean;
   totalValue: string;
-  setTotalValue: React.Dispatch<React.SetStateAction<string>>;
+  setTotalValue: React.Dispatch<React.SetStateAction<CardDetailsType>>;
 
   // placeholder: string;
   // isPassword: boolean;
@@ -26,11 +28,16 @@ const InputExpiryDate = ({
   setTotalValue,
 }: InputExpiryDateProps) => {
   const inputRef = useRef(null);
+  const { cardNumberExpiry, setCardNumberExpiry } = useStorageHook();
   const [firstPart, setFirstPart] = useState("");
   const [secondPart, setSecondPart] = useState("");
 
   useEffect(() => {
-    setTotalValue(`${firstPart}/${secondPart}`);
+    // setTotalValue(`${firstPart}/${secondPart}`);
+    setTotalValue((prev) => ({
+      ...prev,
+      expiryDate: `${cardNumberExpiry.expiryFirstPart}/${cardNumberExpiry.expirySecondPart}`,
+    }));
   }, [firstPart, secondPart]);
 
   const handleKeyUp = (e: any) => {
@@ -88,8 +95,13 @@ const InputExpiryDate = ({
             minLength={0}
             onKeyUp={handleKeyUp}
             ref={inputRef}
-            value={firstPart}
-            onChange={(e) => setFirstPart(e.target.value)}
+            value={cardNumberExpiry.expiryFirstPart}
+            onChange={(e) =>
+              setCardNumberExpiry((prev) => ({
+                ...prev,
+                expiryFirstPart: e.target.value,
+              }))
+            }
             className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm text-center ${
               isLabelSide ? "md:max-w-[63%]" : ""
             }`}
@@ -102,8 +114,13 @@ const InputExpiryDate = ({
             minLength={0}
             onKeyUp={handleKeyUp}
             ref={inputRef}
-            value={secondPart}
-            onChange={(e) => setSecondPart(e.target.value)}
+            value={cardNumberExpiry.expirySecondPart}
+            onChange={(e) =>
+              setCardNumberExpiry((prev) => ({
+                ...prev,
+                expirySecondPart: e.target.value,
+              }))
+            }
             className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm text-center ${
               isLabelSide ? "md:max-w-[63%]" : ""
             }`}
