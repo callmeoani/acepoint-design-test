@@ -5,24 +5,21 @@ import InputExpiryDate from "../inputs/InputExpiryDate";
 import ButtonBasic from "../buttons/ButtonBasic";
 import useStorageHook from "../../hooks/useStorageHook";
 
+import { HiPencil } from "react-icons/hi";
+
 const MainForm = () => {
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [cvv, setCvv] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [password, setPassword] = useState("");
+  const { cardDetails, setCardDetails, editOn, setEditOn, savedCardUsed } =
+    useStorageHook();
 
-  const { cardDetails, setCardDetails } = useStorageHook();
-
-  const handleClick = (e: any) => {
+  const handlePayNow = (e: any) => {
     e.preventDefault();
-    console.log("card number: ", cardNumber);
-    console.log("CVV number: ", cvv);
-    console.log("expiry date: ", expiryDate);
-    console.log("password: ", password);
+  };
+  const handleUpdateCard = (e: any) => {
+    e.preventDefault();
   };
 
   return (
-    <form className="">
+    <form className="relative bg-gre-400">
       <div>
         <InputCardNum
         // totalCardNumber={cardNumber}
@@ -40,8 +37,6 @@ const MainForm = () => {
           placeholder="123"
           minInput={3}
           maxInput={4}
-          // value={cvv}
-          // valueChange={(e) => setCvv(e.target.value)}
           value={cardDetails.cvv}
           valueChange={(e) => {
             setCardDetails((prev) => ({
@@ -60,8 +55,6 @@ const MainForm = () => {
         hint="Enter the 3 or 4 digit number on the card"
         isLabelSide={true}
         errorMsg=""
-        // totalValue={expiryDate}
-        // setTotalValue={setExpiryDate}
         totalValue={cardDetails.expiryDate}
         setTotalValue={setCardDetails}
       />
@@ -72,8 +65,6 @@ const MainForm = () => {
           isLabelSide={true}
           inputFor="password"
           placeholder="password"
-          // value={password}
-          // valueChange={(e) => setPassword(e.target.value)}
           value={cardDetails.password}
           valueChange={(e) =>
             setCardDetails((prev) => ({
@@ -86,11 +77,48 @@ const MainForm = () => {
           errorMsg={""}
         />
       </div>
-      <ButtonBasic
-        displayName="Pay Now"
-        stylings={"h-[50px] md:h-[60px] text-clrLight bg-clrBluePry"}
-        buttonClick={(e: any) => handleClick(e)}
-      />
+
+      {editOn && savedCardUsed ? (
+        <ButtonBasic
+          displayName="Update Card"
+          stylings={"h-[50px] md:h-[60px] text-clrLight bg-clrBluePry"}
+          buttonClick={(e: any) => handleUpdateCard(e)}
+        />
+      ) : (
+        <ButtonBasic
+          displayName="Pay Now"
+          stylings={"h-[50px] md:h-[60px] text-clrLight bg-clrBluePry"}
+          buttonClick={(e: any) => handlePayNow(e)}
+        />
+      )}
+
+      {savedCardUsed && (
+        <div className="absolute top-2 right-0">
+          {editOn ? (
+            <div className="flex flex-col md:flex-row items-center gap-2">
+              <ButtonBasic
+                displayName="Cancel"
+                stylings=" text-red-400 text-xs md:text-sm"
+                buttonClick={() => {
+                  setEditOn(false);
+                }}
+              />
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault;
+                setEditOn(true);
+              }}
+              className="flex items-center gap-1"
+            >
+              <HiPencil size={20} color={"#2F58CD"} />
+              <p className="text-clrBluePry text-sm font-bold ">Edit</p>
+            </button>
+          )}
+        </div>
+      )}
     </form>
   );
 };

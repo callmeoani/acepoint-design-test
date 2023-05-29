@@ -8,20 +8,28 @@ import { AiFillApple } from "react-icons/ai";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { slide as Menu, State } from "react-burger-menu";
 import useStorageHook from "../../hooks/useStorageHook";
-import { StorageContextType, SummaryType } from "../../@types/type";
+import {
+  CardDetailsType,
+  CardDisplayInfoType,
+  StorageContextType,
+  SummaryType,
+} from "../../@types/type";
 import SavedCard from "../others/SavedCard";
 import MainForm from "../others/MainForm";
 import CardsListing from "../others/CardsListing";
 import StorageContext from "../../context/StorageProvider";
 
 const Home = () => {
-  const [showSaveCards, setShowSavedCards] = useState(false);
+  const [showSavedCards, setShowSavedCards] = useState(false);
   const [showCardDetails, setShowCardsDetails] = useState(false);
+  const [cardDisplayInfo, setCardDisplayInfo] = useState<CardDisplayInfoType>({
+    name: "",
+    cardNumber: "",
+    expiryDate: "",
+    cardType: "",
+  });
 
   const { savedCards, setSavedCards } = useStorageHook();
-  // const { savedCards, setSavedCards } = useContext(
-  //   StorageContext
-  // ) as StorageContextType;
 
   const productSummaryData = [
     {
@@ -95,14 +103,23 @@ const Home = () => {
             }}
           />
 
-          {showSaveCards && (
+          {showSavedCards && (
             <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
-              <CardsListing cardList={savedCards} />
+              <CardsListing
+                cardList={savedCards}
+                setShowSavedCards={setShowSavedCards}
+                setShowCardsDetails={setShowCardsDetails}
+                setCardDisplayInfo={setCardDisplayInfo}
+              />
             </div>
           )}
           {showCardDetails && (
             <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
-              <SavedCard />
+              <SavedCard
+                cardDetails={cardDisplayInfo}
+                setShowSavedCards={setShowSavedCards}
+                setShowCardsDetails={setShowCardsDetails}
+              />
             </div>
           )}
         </div>

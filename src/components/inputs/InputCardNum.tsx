@@ -8,29 +8,12 @@ type InputCardNumProps = {
   setTotalCardNumber: React.Dispatch<React.SetStateAction<CardDetailsType>>;
 };
 
-{
-  // totalCardNumber,
-  // setTotalCardNumber,
-}
 const InputCardNum = () => {
-  const { cardNumberExpiry, setCardNumberExpiry } = useStorageHook();
+  const { cardNumberExpiry, setCardNumberExpiry, editOn } = useStorageHook();
   const inputRef = useRef<HTMLInputElement>(null);
   const secondRef = useRef<HTMLInputElement>(null);
   const thirdRef = useRef<HTMLInputElement>(null);
   const fourthRef = useRef<HTMLInputElement>(null);
-
-  const [firstInput, setFirstInput] = useState("");
-  const [secondInput, setSecondInput] = useState("");
-  const [thirdInput, setThirdInput] = useState("");
-  const [fourthInput, setFourthInput] = useState("");
-
-  // useEffect(() => {
-
-  //   setTotalCardNumber((prev) => ({
-  //     ...prev,
-  //     cardNumber: `${firstInput}${secondInput}${thirdInput}${fourthInput}`,
-  //   }));
-  // }, [firstInput, secondInput, thirdInput, fourthInput]);
 
   const handleKeyUp = (e: any) => {
     if (e.target.value.length === e.target.maxLength) {
@@ -73,7 +56,7 @@ const InputCardNum = () => {
       <div
         onClick={(e) => {
           let current = document.querySelector(".cardNum");
-          if (current instanceof HTMLElement) {
+          if (editOn && current instanceof HTMLElement) {
             // while (current && current.tagName !== "INPUT") {
             console.log("just before the while loop: ", current);
             console.log(
@@ -127,10 +110,13 @@ const InputCardNum = () => {
           e.stopPropagation();
         }}
         className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm gap-2 
-        focus-within:border-clrBluePry focus-within:outline-clrBluePry focus-within:bg-clrBluePry focus-within:bg-opacity-5 focus-within:outline-1
+        focus-within:border-clrBluePry focus-within:outline-clrBluePry focus-within:bg-clrBluePry focus-within:bg-opacity-5 focus-within:outline-1 ${
+          editOn ? "" : "bg-[#EFEFEF4D]"
+        }
       `}
       >
         <input
+          disabled={!editOn}
           type="text"
           placeholder="1234"
           maxLength={4}
@@ -144,27 +130,31 @@ const InputCardNum = () => {
               numFirstPart: e.target.value,
             }))
           }
-          // onChange={(e) => setFirstInput(e.target.value)}
           onClick={(e) => {
             if (inputRef !== null && inputRef !== undefined) {
               inputRef?.current?.focus();
             }
             e.stopPropagation();
           }}
-          className="cardNum w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
+          className={`cardNum w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide  ${
+            !editOn ? "text-gray-400" : ""
+          }`}
         />
-        <div className="text-clrDark font-bold text-center flex items-center justify-center">
+        <div
+          className={`text-clrDark font-bold text-center flex items-center justify-center ${
+            !editOn ? "text-gray-400" : ""
+          }`}
+        >
           -
         </div>
         <input
+          disabled={!editOn}
           type="text"
           placeholder="3456"
           maxLength={4}
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={secondRef}
-          // value={secondInput}
-          // onChange={(e) => setSecondInput(e.target.value)}
           value={cardNumberExpiry.numSecondPart}
           onChange={(e) =>
             setCardNumberExpiry((prev) => ({
@@ -178,20 +168,25 @@ const InputCardNum = () => {
             }
             e.stopPropagation();
           }}
-          className="w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
+          className={`w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide  ${
+            !editOn ? "text-gray-400" : ""
+          }`}
         />
-        <div className="text-clrDark font-bold text-center flex items-center justify-center">
+        <div
+          className={`text-clrDark font-bold text-center flex items-center justify-center ${
+            !editOn ? "text-gray-400" : ""
+          }`}
+        >
           -
         </div>
         <input
+          disabled={!editOn}
           type="text"
           placeholder="5678"
           maxLength={4}
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={thirdRef}
-          // value={thirdInput}
-          // onChange={(e) => setThirdInput(e.target.value)}
           value={cardNumberExpiry.numThirdPart}
           onChange={(e) =>
             setCardNumberExpiry((prev) => ({
@@ -205,20 +200,25 @@ const InputCardNum = () => {
             }
             e.stopPropagation();
           }}
-          className="w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
+          className={`w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide  ${
+            !editOn ? "text-gray-400" : ""
+          }`}
         />
-        <div className="text-clrDark font-bold text-center flex items-center justify-center">
+        <div
+          className={`text-clrDark font-bold text-center flex items-center justify-center ${
+            !editOn ? "text-gray-400" : ""
+          }`}
+        >
           -
         </div>
         <input
+          disabled={!editOn}
           type="text"
           placeholder="7890"
           maxLength={4}
           minLength={0}
           onKeyUp={handleKeyUp}
           ref={fourthRef}
-          // value={fourthInput}
-          // onChange={(e) => setFourthInput(e.target.value)}
           value={cardNumberExpiry.numFourthPart}
           onChange={(e) =>
             setCardNumberExpiry((prev) => ({
@@ -232,7 +232,9 @@ const InputCardNum = () => {
             }
             e.stopPropagation();
           }}
-          className="w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide"
+          className={`w-8 bg-transparent outline-none border-none focus:outline-none tracking-wide  ${
+            !editOn ? "text-gray-400" : ""
+          }`}
         />
       </div>
     </div>

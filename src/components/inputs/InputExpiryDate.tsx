@@ -4,19 +4,11 @@ import useStorageHook from "../../hooks/useStorageHook";
 
 type InputExpiryDateProps = {
   label: string;
-  // inputFor: string;
   hint: string;
   isLabelSide: boolean;
   totalValue: string;
   setTotalValue: React.Dispatch<React.SetStateAction<CardDetailsType>>;
-
-  // placeholder: string;
-  // isPassword: boolean;
   errorMsg: string;
-  // value: string;
-  // valueChange: React.ChangeEventHandler<HTMLInputElement>;
-  // centralize: boolean;
-  // inputType?: string;
 };
 
 const InputExpiryDate = ({
@@ -24,21 +16,9 @@ const InputExpiryDate = ({
   hint,
   isLabelSide,
   errorMsg,
-  totalValue,
-  setTotalValue,
 }: InputExpiryDateProps) => {
   const inputRef = useRef(null);
-  const { cardNumberExpiry, setCardNumberExpiry } = useStorageHook();
-  const [firstPart, setFirstPart] = useState("");
-  const [secondPart, setSecondPart] = useState("");
-
-  useEffect(() => {
-    // setTotalValue(`${firstPart}/${secondPart}`);
-    setTotalValue((prev) => ({
-      ...prev,
-      expiryDate: `${cardNumberExpiry.expiryFirstPart}/${cardNumberExpiry.expirySecondPart}`,
-    }));
-  }, [firstPart, secondPart]);
+  const { cardNumberExpiry, setCardNumberExpiry, editOn } = useStorageHook();
 
   const handleKeyUp = (e: any) => {
     if (e.target.value.length === e.target.maxLength) {
@@ -89,6 +69,7 @@ const InputExpiryDate = ({
           id="expiry-date"
         >
           <input
+            disabled={!editOn}
             type="text"
             placeholder="12"
             maxLength={2}
@@ -104,10 +85,11 @@ const InputExpiryDate = ({
             }
             className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm text-center ${
               isLabelSide ? "md:max-w-[63%]" : ""
-            }`}
+            } ${!editOn ? "text-gray-400" : ""}`}
           />
           <p className="text-clrDark font-bold">/</p>
           <input
+            disabled={!editOn}
             type="text"
             placeholder="21"
             maxLength={2}
@@ -123,7 +105,7 @@ const InputExpiryDate = ({
             }
             className={`w-full rounded-md border-solid border border-clrGreyPry border-opacity-50 flex items-center h-12 pl-[5%] pr-[10%] focus:border-clrBluePry focus:outline-clrBluePry focus:bg-clrBluePry focus:bg-opacity-5 focus:outline-1 text-clrDark text-sm text-center ${
               isLabelSide ? "md:max-w-[63%]" : ""
-            }`}
+            } ${!editOn ? "text-gray-400" : ""}`}
           />
         </div>
       </div>

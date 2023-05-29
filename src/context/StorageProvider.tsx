@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { State } from "react-burger-menu";
 import {
   CardDetailsType,
@@ -54,11 +54,21 @@ export const StorageProvider = ({ children }: Props) => {
       expirySecondPart: "",
     });
   const [cardDetails, setCardDetails] = useState<CardDetailsType>({
-    cardNumber: `${cardNumberExpiry.numFirstPart}${cardNumberExpiry.numSecondPart}${cardNumberExpiry.numThirdPart}${cardNumberExpiry.numFourthPart}`,
+    cardNumber: "",
     cvv: "",
-    expiryDate: `${cardNumberExpiry.expiryFirstPart} / ${cardNumberExpiry.expirySecondPart}`,
+    expiryDate: "",
     password: "",
   });
+  const [editOn, setEditOn] = useState<boolean>(true);
+  const [savedCardUsed, setSavedCardUsed] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCardDetails((prev) => ({
+      ...prev,
+      cardNumber: `${cardNumberExpiry.numFirstPart}${cardNumberExpiry.numSecondPart}${cardNumberExpiry.numThirdPart}${cardNumberExpiry.numFourthPart}`,
+      expiryDate: `${cardNumberExpiry.expiryFirstPart} / ${cardNumberExpiry.expirySecondPart}`,
+    }));
+  }, [cardNumberExpiry]);
 
   return (
     <StorageContext.Provider
@@ -69,6 +79,10 @@ export const StorageProvider = ({ children }: Props) => {
         setCardDetails,
         cardNumberExpiry,
         setCardNumberExpiry,
+        editOn,
+        setEditOn,
+        savedCardUsed,
+        setSavedCardUsed,
       }}
     >
       {children}

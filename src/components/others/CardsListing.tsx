@@ -1,14 +1,28 @@
 import { useEffect } from "react";
-import { SavedCardsType } from "../../@types/type";
+import {
+  CardDetailsType,
+  CardDisplayInfoType,
+  SavedCardsType,
+} from "../../@types/type";
 import BulletPointer from "./BulletPointer";
 import useStorageHook from "../../hooks/useStorageHook";
+import { MdOutlineCancel } from "react-icons/md";
 
 type CardListType = {
   cardList: SavedCardsType[];
+  setShowSavedCards: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowCardsDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  setCardDisplayInfo: React.Dispatch<React.SetStateAction<CardDisplayInfoType>>;
 };
 
-const CardsListing = ({ cardList }: CardListType) => {
-  const { setCardNumberExpiry, setCardDetails } = useStorageHook();
+const CardsListing = ({
+  cardList,
+  setShowSavedCards,
+  setShowCardsDetails,
+  setCardDisplayInfo,
+}: CardListType) => {
+  const { setCardNumberExpiry, setCardDetails, setSavedCardUsed, setEditOn } =
+    useStorageHook();
 
   const handleCardClick = (card: SavedCardsType) => {
     setCardNumberExpiry((prev) => ({
@@ -26,10 +40,23 @@ const CardsListing = ({ cardList }: CardListType) => {
       cvv: card.cvv,
       password: card.password,
     }));
+    setSavedCardUsed(true);
+    setEditOn(false);
+
+    setCardDisplayInfo((prev) => ({
+      ...prev,
+      name: `${card.firstName} ${card.lastName}`,
+      cardNumber: card.cardNumber,
+      expiryDate: `${card.expiryDate}`,
+      cardType: "masterCard",
+    }));
+
+    setShowSavedCards(false);
+    setShowCardsDetails(true);
   };
 
   return (
-    <div className="bg-white rounded-lg px-4 py-6">
+    <div className="relative bg-white rounded-lg px-4 py-6 shadow-lg">
       <h2>Available Cards</h2>
       <ul>
         {cardList.map((card) => (
@@ -51,6 +78,18 @@ const CardsListing = ({ cardList }: CardListType) => {
           </li>
         ))}
       </ul>
+
+      <button
+        onClick={() => {
+          setShowSavedCards(false);
+        }}
+        className="absolute top-3 right-3 text-clrDark opacity-40 hover:opacity-100 active:text-clrDanger "
+      >
+        <MdOutlineCancel
+          size={30}
+          // color="#16213E"
+        />
+      </button>
     </div>
   );
 };

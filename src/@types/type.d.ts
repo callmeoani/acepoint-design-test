@@ -21,6 +21,8 @@ export type CardDetailsType = {
   password: string;
 };
 
+// export type EditOnType = boolean
+
 export type CardNumberExpiryType = {
   numFirstPart: string;
   numSecondPart: string;
@@ -39,4 +41,15 @@ export type StorageContextType = {
   setCardNumberExpiry: React.Dispatch<
     React.SetStateAction<CardNumberExpiryType>
   >;
+  editOn: boolean;
+  setEditOn: React.Dispatch<React.SetStateAction<boolean>>;
+  savedCardUsed: boolean;
+  setSavedCardUsed: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type CardDisplayInfoType = {
+  name: string;
+  cardNumber: string;
+  expiryDate: string;
+  cardType: string;
 };
