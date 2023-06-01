@@ -95,7 +95,7 @@ const Home = () => {
           <ButtonBasic
             displayName="Cards"
             stylings={
-              "mb-5 md:mb-10 mx-auto h-[30px] md:h-[40px] max-w-[80px] bg-clrBluePry text-clrLight"
+              "mb-5 md:mb-12 mx-auto h-[30px] md:h-[40px] max-w-[80px] bg-clrBluePry text-clrLight"
             }
             buttonClick={() => {
               console.log("cards button clicked=======");
@@ -104,7 +104,7 @@ const Home = () => {
           />
 
           {showSavedCards && (
-            <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] ">
+            <div className="absolute left-[50%] -translate-x-[50%] top-2 w-[80%] z-10 ">
               <CardsListing
                 cardList={savedCards}
                 setShowSavedCards={setShowSavedCards}
@@ -123,7 +123,7 @@ const Home = () => {
             </div>
           )}
         </div>
-        <div className="bg-[#F1F6F9] px-5 py-6 rounded-lg mb8 flex-1 md:flex md:flex-col  ">
+        <div className="bg-[#F1F6F9] px-5 py-6 rounded-xl mb8 flex-1 md:flex md:flex-col  ">
           <div className="hidden md:flex md:flex-1 ">Hello there</div>
           <div>
             <div className="flex flex-col gap-2 md:gap-3">

@@ -37,7 +37,7 @@ const InputBasic = ({
   return (
     <>
       <div
-        className={`relative flex mb-5  ${
+        className={`relative flex mb-5 md:mb-7  ${
           isLabelSide
             ? "flex-col gap-4 md:flex-row md:justify-between"
             : "flex-col gap-4"

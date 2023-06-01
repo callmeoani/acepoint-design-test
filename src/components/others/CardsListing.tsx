@@ -57,15 +57,18 @@ const CardsListing = ({
 
   return (
     <div className="relative bg-white rounded-lg px-4 py-6 shadow-lg">
-      <h2>Available Cards</h2>
-      <ul>
+      <h2 className="text-xl font-bold mb-3">Your saved cards</h2>
+      <ul className="flex flex-col gap-2">
         {cardList.map((card) => (
-          <li key={card.id}>
+          <li
+            key={card.id}
+            className="border-b-solid border-b-clrLight border-b pb-2"
+          >
             <button onClick={() => handleCardClick(card)}>
-              <p>
+              <p className="text-sm md:text-base ">
                 {card.firstName} {card.lastName}
               </p>
-              <div className="flex items-center justify-center gap-3 ">
+              <div className="flex items-center gap-3 ">
                 <div className="flex items-center justify-center gap-1">
                   <BulletPointer styling="w-[6px] h-[6px]" />
                   <BulletPointer styling="w-[6px] h-[6px]" />

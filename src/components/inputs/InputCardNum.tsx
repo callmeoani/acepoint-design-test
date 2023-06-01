@@ -46,7 +46,7 @@ const InputCardNum = () => {
     }
   };
   return (
-    <div className={`relative flex mb-5 flex-col gap-4`}>
+    <div className={`relative flex mb-5 md:mb-7 flex-col gap-4`}>
       <label htmlFor={"card-number"} className="flex flex-col gap-1">
         <p className="text-sm text-clrDark font-bold">Card Number</p>
         <p className="text-xs text-clrGreyPry">
